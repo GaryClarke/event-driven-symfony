@@ -1,0 +1,36 @@
+.idea
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+### Code coverage ###
+build
+
+###> PHPCS ###
+.phpcs-cache
+
+### PHP Lint ###
+.phplint-cache
+
+### PHP Unit ###
+.phpunit.result.cache
+
+###> phpunit/phpunit ###
+.phpunit.result.cache
+.phpunit.cache/
+###< phpunit/phpunit ###
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
+
+###> overtrue/phplint ###
+/.phplint.cache
+###< overtrue/phplint ###

@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    image: garyclarke/nginx24-multi
+    ports:
+      - "8080:80"  # Maps port 8080 on the host to port 80 in the container
+    volumes:
+      - ./public:/var/www/html/public
+  app:
+    image: garyclarke/php83-multi
+    volumes:
+      - .:/var/www/html
+    extra_hosts:
+      - host.docker.internal:host-gateway
