@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ruleset name="PHP_CodeSniffer">
+  <!-- Config -->
+  <arg name="basepath" value="."/>
+  <arg name="cache" value=".phpcs-cache"/>
+  <arg name="colors"/>
+  <arg name="extensions" value="php"/>
+
+  <!-- Directories to scan -->
+  <file>bin/</file>
+  <file>config/</file>
+  <file>public/</file>
+  <file>src/</file>
+  <file>tests/</file>
+
+  <!-- Ignore app bootstrap -->
+  <exclude-pattern>config/bootstrap.php</exclude-pattern>
+
+  <!-- Ignore the bootstrap file for tests -->
+  <exclude-pattern>tests/bootstrap.php</exclude-pattern>
+
+  <!-- PSR-12 Extended Coding Style -->
+  <rule ref="PSR12"/>
+</ruleset>
