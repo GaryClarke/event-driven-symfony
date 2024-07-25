@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Webhook\Handler;
 
-
 use App\DTO\Webhook;
 
 class NewsletterHandler implements WebhookHandlerInterface
