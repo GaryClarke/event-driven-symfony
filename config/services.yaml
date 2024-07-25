@@ -21,5 +21,10 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # In Symfony, the _instanceof configuration key allows you to automatically apply configuration settings to all services that implement a specific interface or extend a certain class. This is very useful for applying tags, method calls, or other configuration options uniformly across multiple services without needing to configure each one individually.
+    _instanceof:
+        App\Webhook\Handler\WebhookHandlerInterface:
+            tags: [ 'webhook.handler' ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
