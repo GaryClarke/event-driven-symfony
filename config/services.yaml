@@ -25,6 +25,9 @@ services:
     _instanceof:
         App\Webhook\Handler\WebhookHandlerInterface:
             tags: [ 'webhook.handler' ]
+        App\Forwarder\Newsletter\ForwarderInterface:
+            tags: [ 'forwarder.newsletter' ]
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
