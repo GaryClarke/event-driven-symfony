@@ -18,6 +18,12 @@ class SubscriptionStartForwarder implements ForwarderInterface
 
     public function forward(NewsletterWebhook $newsletterWebhook): void
     {
-        // TODO: Implement forward() method.
+        // Instantiate a class which models Identify data
+
+        // Map the NewsletterWebhook data to the model
+
+        // Validate the model
+
+        // Use the CDP client to POST the data to the CDP
     }
 }
