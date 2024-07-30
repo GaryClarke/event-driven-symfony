@@ -26,6 +26,8 @@ class SubscriptionStartForwarder implements ForwarderInterface
         // Map the NewsletterWebhook data to the model
         (new SubscriptionStartMapper())->map($newsletterWebhook, $model);
 
+        dd($model);
+
         // Validate the model
 
         // Use the CDP client to POST the data to the CDP

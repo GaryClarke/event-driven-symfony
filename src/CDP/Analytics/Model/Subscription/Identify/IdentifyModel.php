@@ -18,6 +18,31 @@ class IdentifyModel implements ModelInterface
 
     private string $id;
 
+    public function setProduct(string $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function setEventDate(string $eventDate): void
+    {
+        $this->eventDate = $eventDate;
+    }
+
+    public function setSubscriptionId(string $subscriptionId): void
+    {
+        $this->subscriptionId = $subscriptionId;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
     public function toArray(): array
     {
         return [
