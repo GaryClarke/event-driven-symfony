@@ -36,6 +36,8 @@ class SubscriptionStartForwarder implements ForwarderInterface
 
         // Use the CDP client to POST the data to the CDP
 
+        dd($this->cdpClient);
+
         $this->cdpClient->identify($model);
     }
 }
