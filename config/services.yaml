@@ -28,6 +28,9 @@ services:
         App\Forwarder\Newsletter\ForwarderInterface:
             tags: [ 'forwarder.newsletter' ]
 
+    # Services which will be doubled for tests
+    App\CDP\Http\CdpClientInterface: '@App\CDP\Http\CdpClient'
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
