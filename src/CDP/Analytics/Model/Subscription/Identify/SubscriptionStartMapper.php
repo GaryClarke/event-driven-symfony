@@ -10,7 +10,7 @@ use Throwable;
 
 class SubscriptionStartMapper
 {
-    public function map(SubscriptionSourceInterface $source, IdentifyModel $target)
+    public function map(SubscriptionSourceInterface $source, IdentifyModel $target): void
     {
         try {
             $target->setProduct($source->getProduct());

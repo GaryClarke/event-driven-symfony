@@ -8,7 +8,7 @@ use App\CDP\Analytics\Model\ModelInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class CdpClient
+class CdpClient implements CdpClientInterface
 {
     private const string CDP_API_URL = 'https://some-cdp-api.com';
 

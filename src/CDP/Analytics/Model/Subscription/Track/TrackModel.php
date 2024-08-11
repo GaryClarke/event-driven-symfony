@@ -176,5 +176,4 @@ class TrackModel implements ModelInterface
             'id' => $this->id // user.client_id
         ];
     }
-
 }

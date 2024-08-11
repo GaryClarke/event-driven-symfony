@@ -8,7 +8,7 @@ use App\CDP\Analytics\Model\ModelInterface;
 
 interface CdpClientInterface
 {
-    public function identify(ModelInterface $model);
+    public function identify(ModelInterface $model): void;
 
-    public function track(ModelInterface $model);
+    public function track(ModelInterface $model): void;
 }

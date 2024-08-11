@@ -6,6 +6,7 @@ namespace App\DTO\Newsletter;
 
 use App\CDP\Analytics\Model\Subscription\SubscriptionSourceInterface;
 use App\DTO\User\User;
+use DateInterval;
 use DateTimeImmutable;
 use JsonSerializable;
 
@@ -106,5 +107,50 @@ class NewsletterWebhook implements SubscriptionSourceInterface
     {
         // user.client_id
         return $this->user->getClientId();
+    }
+
+    public function requiresConsent(): bool
+    {
+        return in_array($this->user->getRegion(), self::CONSENT_REGIONS);
+    }
+
+    public function getPlatform(): string
+    {
+        return 'web';
+    }
+
+    public function getProductName(): string
+    {
+        return $this->newsletter->getNewsletterId();
+    }
+
+    public function getRenewalDate(): string
+    {
+        $date = $this->timestamp;
+
+        $interval = new DateInterval('P1Y');
+
+        return $date->add($interval)->format('Y-m-d');
+    }
+
+    public function getStartDate(): string
+    {
+        return $this->timestamp->format('Y-m-d');
+    }
+
+    public function getType(): string
+    {
+        return 'newsletter';
+    }
+
+    public function getStatus(): string
+    {
+        $status = 'subscribed';
+
+        if ($this->event === 'newsletter_unsubscribed') {
+            $status = 'unsubscribed';
+        }
+
+        return $status;
     }
 }
