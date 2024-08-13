@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\CDP\Analytics\Model\Subscription\Track;
 
 use App\CDP\Analytics\Model\ModelInterface;
+use App\Utils\ArrayFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TrackModel implements ModelInterface
@@ -149,7 +150,7 @@ class TrackModel implements ModelInterface
 
     public function toArray(): array
     {
-        return [
+        $model = [
             'type' => self::TRACK_TYPE,
             'event' => $this->event, // event
             'context' => [
@@ -174,5 +175,9 @@ class TrackModel implements ModelInterface
             ],
             'id' => $this->id // user.client_id
         ];
+
+        ArrayFilter::removeEmptyKeysRecursively($model);
+
+        return $model;
     }
 }
