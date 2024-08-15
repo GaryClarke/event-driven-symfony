@@ -98,4 +98,14 @@ class WebhooksControllerTest extends WebTestCase
 
         $this->assertSame(Response::HTTP_NO_CONTENT, $this->webTester->getResponse()->getStatusCode());
     }
+
+    public function testExecutionIsStoppedIfMandatoryInfoCanNotBeMapped(): void
+    {
+        $this->markTestSkipped('wip');
+    }
+
+    public function testWebhookExceptionThrownIfIdentifyModelValidationFails(): void
+    {
+        $this->markTestSkipped('wip');
+    }
 }
