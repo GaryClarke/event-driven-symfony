@@ -30,13 +30,24 @@ services:
 
     # Services which will be doubled for tests
     App\CDP\Http\CdpClientInterface: '@App\CDP\Http\CdpClient'
+    App\Error\ErrorHandlerInterface: '@App\Error\ErrorHandler'
 
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+when@dev:
+    services:
+        App\Error\ErrorHandlerInterface: '@App\Error\DebugErrorHandler'
+
 when@test:
     services:
         App\Tests\TestDoubles\CDP\Http\FakeCdpClient: ~
         App\CDP\Http\CdpClientInterface: '@App\Tests\TestDoubles\CDP\Http\FakeCdpClient'
+
+        App\Tests\TestDoubles\Error\FakeErrorHandler: ~
+        App\Error\ErrorHandlerInterface: '@App\Tests\TestDoubles\Error\FakeErrorHandler'
+
+
+
 

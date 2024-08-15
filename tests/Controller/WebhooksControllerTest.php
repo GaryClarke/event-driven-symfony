@@ -101,11 +101,11 @@ class WebhooksControllerTest extends WebTestCase
 
     public function testExecutionIsStoppedIfMandatoryInfoCanNotBeMapped(): void
     {
-        $this->markTestSkipped('wip');
+        $this->markTestIncomplete('wip');
     }
 
     public function testWebhookExceptionThrownIfIdentifyModelValidationFails(): void
     {
-        $this->markTestSkipped('wip');
+        $this->markTestIncomplete('wip');
     }
 }
