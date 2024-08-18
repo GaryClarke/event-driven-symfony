@@ -119,7 +119,23 @@ class WebhooksControllerTest extends WebTestCase
 
     public function testWebhookExceptionThrownIfIdentifyModelValidationFails(): void
     {
-        $this->markTestIncomplete('wip');
+        /** @phpcs:disable */
+        $incomingWebhookPayload = '{"event":"newsletter_subscribed","id":"","origin":"www","timestamp":"2024-12-12T12:00:00Z","user": {"client_id":"4a2b342d-6235-46a9-bc95-6e889b8e5de1","email":"email@example.com","region":"EU"},"newsletter": {"newsletter_id":"newsletter-001","topic":"N/A","product_id":"TechGadget-3000X"}}';
+        /** @phpcs:enable */ // Blank ID should fail validation
+
+        $this->postJson($incomingWebhookPayload);
+
+        $webhookException = $this->errorHandler->getError();
+        assert($webhookException instanceof WebhookException);
+
+        $this->assertSame(1, $this->errorHandler->getHandleCallCount());
+
+        $this->assertStringContainsString(
+            'Invalid IdentifyModel properties: subscriptionId',
+            $webhookException->getMessage()
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->webTester->getResponse()->getStatusCode());
     }
 
     private function postJson(string $payload): void
