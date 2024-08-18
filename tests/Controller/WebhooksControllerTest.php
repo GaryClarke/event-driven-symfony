@@ -8,7 +8,10 @@ use App\CDP\Analytics\Model\Subscription\Identify\IdentifyModel;
 use App\CDP\Analytics\Model\Subscription\Track\TrackModel;
 use App\CDP\Http\CdpClient;
 use App\CDP\Http\CdpClientInterface;
+use App\Error\ErrorHandlerInterface;
+use App\Error\Exception\WebhookException;
 use App\Tests\TestDoubles\CDP\Http\FakeCdpClient;
+use App\Tests\TestDoubles\Error\FakeErrorHandler;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,12 +22,14 @@ class WebhooksControllerTest extends WebTestCase
     private KernelBrowser $webTester;
     private ContainerInterface $container;
     private FakeCdpClient $cdpClient;
+    private FakeErrorHandler $errorHandler;
 
     protected function setUp(): void
     {
         $this->webTester = static::createClient();
         $this->container = $this->webTester->getContainer();
         $this->cdpClient = $this->container->get(CdpClientInterface::class);
+        $this->errorHandler = $this->container->get(ErrorHandlerInterface::class);
     }
 
     public function testWebhooksAreHandled(): void
@@ -33,15 +38,7 @@ class WebhooksControllerTest extends WebTestCase
         $incomingWebhookPayload = '{"event":"newsletter_subscribed","id":"12345","origin":"www","timestamp":"2024-12-12T12:00:00Z","user": {"client_id":"4a2b342d-6235-46a9-bc95-6e889b8e5de1","email":"email@example.com","region":"EU"},"newsletter": {"newsletter_id":"newsletter-001","topic":"N/A","product_id":"TechGadget-3000X"}}';
         /** @phpcs:enable */
 
-        $this->webTester->request(
-            method: 'POST',
-            uri: '/webhook',
-            server: [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => '*/*',
-            ],
-            content: $incomingWebhookPayload
-        );
+        $this->postJson($incomingWebhookPayload);
 
         // Assert CdpClient::identify() called once
         $this->assertSame(1, $this->cdpClient->getIdentifyCallCount());
@@ -101,11 +98,40 @@ class WebhooksControllerTest extends WebTestCase
 
     public function testExecutionIsStoppedIfMandatoryInfoCanNotBeMapped(): void
     {
-        $this->markTestIncomplete('wip');
+        /** @phpcs:disable */
+        $incomingWebhookPayload = '{"event":"newsletter_subscribed","origin":"www","timestamp":"2024-12-12T12:00:00Z","user": {"client_id":"4a2b342d-6235-46a9-bc95-6e889b8e5de1","email":"email@example.com","region":"EU"},"newsletter": {"newsletter_id":"newsletter-001","topic":"N/A","product_id":"TechGadget-3000X"}}';
+        /** @phpcs:enable */ // should not map with id missing
+
+        $this->postJson($incomingWebhookPayload);
+
+        $webhookException = $this->errorHandler->getError();
+        assert($webhookException instanceof WebhookException);
+
+        $this->assertSame(1, $this->errorHandler->getHandleCallCount());
+
+        $this->assertStringContainsString(
+            'Could not map App\DTO\Newsletter\NewsletterWebhook to IdentifyModel',
+            $webhookException->getMessage()
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->webTester->getResponse()->getStatusCode());
     }
 
     public function testWebhookExceptionThrownIfIdentifyModelValidationFails(): void
     {
         $this->markTestIncomplete('wip');
+    }
+
+    private function postJson(string $payload): void
+    {
+        $this->webTester->request(
+            method: 'POST',
+            uri: '/webhook',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT' => '*/*',
+            ],
+            content: $payload
+        );
     }
 }

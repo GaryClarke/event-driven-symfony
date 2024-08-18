@@ -30,10 +30,10 @@ class WebhooksController extends AbstractController
             $webhook = $this->serializer->deserialize($request->getContent(), Webhook::class, 'json');
             $webhook->setRawPayload($request->getContent());
             $this->handlerDelegator->delegate($webhook);
-            return new Response(status: 204);
+            return new Response(status: Response::HTTP_NO_CONTENT);
         } catch (Throwable $throwable) {
             $this->errorHandler->handle($throwable);
-            return new Response(status: 400);
+            return new Response(status: Response::HTTP_BAD_REQUEST);
         }
     }
 }
