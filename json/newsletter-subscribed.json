@@ -1,0 +1,15 @@
+{
+    "event": "newsletter_subscribed",
+    "origin": "www",
+    "timestamp": "2024-12-12T12:00:00Z",
+    "user": {
+        "client_id": "4a2b342d-6235-46a9-bc95-6e889b8e5de1",
+        "email": "user@example.com",
+        "region": "EU"
+    },
+    "newsletter": {
+        "newsletter_id": "newsletter-001",
+        "topic": "N/A",
+        "product_id": "TechGadget-3000X"
+    }
+}
